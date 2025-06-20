@@ -97,7 +97,7 @@ public class FillOutFormPanel extends JPanel {
 
         // Prefill App ID if available
         String appId = null;
-        model.UserManager.UserData userData = model.UserManager.getInstance().users.get(loginEmail);
+        model.UserManager.UserData userData = model.UserManager.getInstance().getUserByEmail(loginEmail);
         if (userData != null && userData.getAppId() != null && !userData.getAppId().isEmpty()) {
             appId = userData.getAppId();
         } else {
@@ -194,12 +194,8 @@ public class FillOutFormPanel extends JPanel {
         formPanel.add(titleLabel);
         formPanel.add(Box.createVerticalStrut(20));
 
-        // Personal Information Section
-        formPanel.add(UIUtils.createSectionPanel("Personal Information", createPersonalInfoPanel()));
-        formPanel.add(Box.createVerticalStrut(15));
-
-        // Student Information Section
-        formPanel.add(UIUtils.createSectionPanel("Student Information", createStudentInfoPanel()));
+        // Combined Personal and Student Information Section
+        formPanel.add(UIUtils.createSectionPanel("Personal & Student Information", createPersonalAndStudentInfoPanel()));
         formPanel.add(Box.createVerticalStrut(15));
 
         // Parent Information Section
@@ -272,7 +268,8 @@ public class FillOutFormPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private JPanel createPersonalInfoPanel() {
+    // Combined panel for Personal and Student Information
+    private JPanel createPersonalAndStudentInfoPanel() {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(UIUtils.BACKGROUND_COLOR);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -280,131 +277,124 @@ public class FillOutFormPanel extends JPanel {
         gbc.anchor = GridBagConstraints.WEST;
         gbc.fill = GridBagConstraints.NONE;
 
+        int row = 0;
+        // --- Personal Information Rows ---
         // Row 1 - Name fields
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.0;
+        gbc.gridx = 0; gbc.gridy = row; gbc.weightx = 0.0;
         panel.add(new JLabel("First Name:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(firstNameField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("Middle Name:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(middleNameField, gbc);
-
+        row++;
         // Row 2 - Last Name and Suffix
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.0;
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Last Name:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(lastNameField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("Suffix:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(suffixField, gbc);
-
+        row++;
         // Row 3 - Address and House Type
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.0;
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Address:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(addressField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("House Type:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(houseTypeField, gbc);
-
+        row++;
         // Row 4 - Income
-        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0.0;
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Income:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(incomeField, gbc);
-
-        // Row 5 - AppID (for testing)
-        gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0.0;
+        row++;
+        // Row 5 - AppID
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("App ID (EDU-XXXX):"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(appIDField, gbc);
+        row++;
 
-        return panel;
-    }
-
-    private JPanel createStudentInfoPanel() {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(UIUtils.BACKGROUND_COLOR);
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.fill = GridBagConstraints.NONE;
-
-        // Row 1 - StudID, StudAge, StudBirthdate
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0.0;
+        // --- Student Information Rows ---
+        // Row 6 - StudID, StudAge, StudBirthdate
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Student ID:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(studIDField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("Student Age:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(studAgeField, gbc);
-        gbc.gridx = 4; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 4;
         panel.add(new JLabel("Student Birthdate (YYYY-MM-DD):"), gbc);
-        gbc.gridx = 5; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 5;
         panel.add(studBirthdateField, gbc);
-
-        // Row 2 - StudCitizenship, StudCivilStatus, StudReligion
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0.0;
+        row++;
+        // Row 7 - StudCitizenship, StudCivilStatus, StudReligion
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Student Citizenship:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(studCitizenshipField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("Student Civil Status:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(studCivilStatusField, gbc);
-        gbc.gridx = 4; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 4;
         panel.add(new JLabel("Student Religion:"), gbc);
-        gbc.gridx = 5; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 5;
         panel.add(studReligionField, gbc);
-
-        // Row 3 - StudPermanentAdd, StudCellNo, StudEmail
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0.0;
+        row++;
+        // Row 8 - StudPermanentAdd, StudCellNo, StudEmail
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Permanent Address:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(studPermanentAddField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("Cellphone Number:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(studCellNoField, gbc);
-        gbc.gridx = 4; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 4;
         panel.add(new JLabel("Email Address:"), gbc);
-        gbc.gridx = 5; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 5;
         panel.add(studEmailField, gbc);
-
-        // Row 4 - DegreeProgram, GWA, SchoolID
-        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0.0;
+        row++;
+        // Row 9 - DegreeProgram, GWA, SchoolID
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("Degree Program:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(degreeProgramField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("GWA:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(gwaField, gbc);
-        gbc.gridx = 4; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 4;
         panel.add(new JLabel("School ID:"), gbc);
-        gbc.gridx = 5; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 5;
         panel.add(schoolIDField, gbc);
-
-        // Row 5 - SchoolName, SchoolAdd, SchoolEmail, and Sex
-        gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0.0;
+        row++;
+        // Row 10 - SchoolName, SchoolAdd, SchoolEmail, and Sex
+        gbc.gridx = 0; gbc.gridy = row;
         panel.add(new JLabel("School Name:"), gbc);
-        gbc.gridx = 1; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 1;
         panel.add(schoolNameField, gbc);
-        gbc.gridx = 2; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 2;
         panel.add(new JLabel("School Address:"), gbc);
-        gbc.gridx = 3; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 3;
         panel.add(schoolAddField, gbc);
-        gbc.gridx = 4; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 4;
         panel.add(new JLabel("School Email:"), gbc);
-        gbc.gridx = 5; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 5;
         panel.add(schoolEmailField, gbc);
-        gbc.gridx = 6; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 6;
         panel.add(new JLabel("Sex:"), gbc);
-        gbc.gridx = 7; gbc.weightx = 0.0; gbc.fill = GridBagConstraints.NONE;
+        gbc.gridx = 7;
         panel.add(studSexField, gbc);
 
         return panel;
