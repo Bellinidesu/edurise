@@ -179,24 +179,32 @@ public class FillOutFormPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(UIUtils.BACKGROUND_COLOR);
 
-        // Create a main panel for the form sections (no scroll)
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(UIUtils.BACKGROUND_COLOR);
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+// Create a bold black LineBorder (declare it here once)
+        LineBorder boldBlackBorder = new LineBorder(Color.BLACK, 2);
+
+// Personal and Student Information Section
         JPanel personalStudentPanel = createPersonalAndStudentInfoPanel();
-        personalStudentPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Personal and Student Information"));
+        personalStudentPanel.setBorder(BorderFactory.createTitledBorder(
+                boldBlackBorder, "Personal and Student Information"));
         formPanel.add(personalStudentPanel);
         formPanel.add(Box.createVerticalStrut(8));
-        // Parent Information Section
+
+// Parent Information Section
         JPanel parentPanel = createParentPanel();
-        parentPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Parent Information"));
+        parentPanel.setBorder(BorderFactory.createTitledBorder(
+                boldBlackBorder, "Parent Information"));
         formPanel.add(parentPanel);
         formPanel.add(Box.createVerticalStrut(8));
-        // Children Information Section
+
+// Children Information Section
         JPanel childPanel = createChildPanel();
-        childPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Children Information"));
+        childPanel.setBorder(BorderFactory.createTitledBorder(
+                boldBlackBorder, "Children Information"));
         formPanel.add(childPanel);
 
         // Add navigation buttons
