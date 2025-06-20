@@ -185,19 +185,18 @@ public class FillOutFormPanel extends JPanel {
         formPanel.setBackground(UIUtils.BACKGROUND_COLOR);
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Personal & Student Information Section (already combined)
-        JPanel personalStudentPanel = UIUtils.createSectionPanel("Personal & Student Information", createPersonalAndStudentInfoPanel());
-        personalStudentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel personalStudentPanel = createPersonalAndStudentInfoPanel();
+        personalStudentPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Personal and Student Information"));
         formPanel.add(personalStudentPanel);
         formPanel.add(Box.createVerticalStrut(8));
         // Parent Information Section
-        JPanel parentPanel = UIUtils.createSectionPanel("Parent/Guardian Information", createParentPanel());
-        parentPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel parentPanel = createParentPanel();
+        parentPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Parent Information"));
         formPanel.add(parentPanel);
         formPanel.add(Box.createVerticalStrut(8));
         // Children Information Section
-        JPanel childPanel = UIUtils.createSectionPanel("Children Information", createChildPanel());
-        childPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        JPanel childPanel = createChildPanel();
+        childPanel.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.GRAY), "Children Information"));
         formPanel.add(childPanel);
 
         // Add navigation buttons
